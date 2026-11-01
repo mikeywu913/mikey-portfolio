@@ -1,0 +1,6 @@
+.project-facts{display:grid;grid-template-columns:1fr 1.4fr;gap:24px;margin:0;padding:0 46px 28px}
+.project-facts>div{border-top:1px solid rgba(240,238,233,.14);padding-top:16px}
+.project-facts dt{font-size:10px;letter-spacing:.08em;color:#b3a59b;margin-bottom:8px}
+.project-facts dd{font-size:13px;line-height:1.8;color:#eee6de;margin:0;overflow-wrap:anywhere}
+.art-independent>b{font-size:clamp(27px,4vw,65px)}
+@media(max-width:600px){.project-facts{grid-template-columns:1fr;gap:15px;padding:0 22px 24px}.project-facts dd{font-size:12px}}

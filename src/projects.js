@@ -3,6 +3,9 @@ export const projectWorks = [
   {
     id: "voice-of-penny", title: "The Voice of Penny", titleZh: "佩妮寻声记",
     category: "Narrative short film", categoryZh: "叙事短片", year: "2026", period: "2026.03 — 2026.06",
+    location: "马来西亚 · 吉隆坡", locationEn: "Kuala Lumpur, Malaysia",
+    locationLabel: "合作院校所在地", locationLabelEn: "University location",
+    organization: "马来亚大学 × Infinite Minds Academy", organizationEn: "Universiti Malaya × Infinite Minds Academy",
     role: "Director · Cinematographer · Editor · Original Music", roleZh: "导演 · 摄影 · 剪辑 · 原创音乐",
     description: "A nonspeaking autistic girl finds her voice through painting. A short film co-produced by Infinite Minds Academy and a student team from Universiti Malaya.",
     descriptionZh: "一位非语言自闭症少女通过绘画找到自己的声音。由无限心智学院（IMA）与马来亚大学学生团队联合制作的微电影。",
@@ -19,6 +22,8 @@ export const projectWorks = [
   {
     id: "ima-social", title: "IMA Social Media & Content", titleZh: "IMA 社媒运营与内容制作",
     category: "Social media · Content strategy", categoryZh: "社交媒体 · 内容策划", year: "2026", period: "2026.07 — 2026.09",
+    location: "马来西亚 · 八打灵再也", locationEn: "Petaling Jaya, Malaysia",
+    organization: "Infinite Minds Academy", organizationEn: "Infinite Minds Academy",
     role: "Social Media & Marketing Intern", roleZh: "社交媒体与市场营销实习生",
     description: "Social content, paid campaign design and video production for Infinite Minds Academy.",
     descriptionZh: "为 Infinite Minds Academy 制作社媒内容、广告视觉与视频，连接品牌传播和传播数据。",
@@ -29,6 +34,7 @@ export const projectWorks = [
       ["设计 10 余组 Meta 静态广告及 Instagram 轮播，并制作 A/B 测试版本。", "Designed more than ten Meta static and Instagram carousel ad sets, including A/B test variants."],
       ["完成 14 页印刷版项目手册。", "Produced a 14-page printed programme handbook."],
       ["为 YouTube、Instagram、Facebook 及 Rednote 策划、撰写脚本、拍摄与剪辑 3 支视频。", "Planned, scripted, shot and edited three videos for YouTube, Instagram, Facebook and Rednote."],
+      ["在学院 YouTube 频道发布《The Voice of Penny》，并为新上线的 Rednote（小红书国际版）账号提供内容支持。", "Published The Voice of Penny on the academy's YouTube channel and supported content for its newly launched Rednote account."],
     ],
     outcomes: [
       ["实习期间整体广告支出下降 4.4%，触达增长 62.6%，CPM 下降 19.7%。", "During the internship, overall ad spend fell 4.4%, reach grew 62.6% and CPM fell 19.7%."],
@@ -38,6 +44,8 @@ export const projectWorks = [
   {
     id: "momentus", title: "Momentus 2026 Graduate Showcase", titleZh: "Momentus 2026 毕业展",
     category: "Visual identity · Campaign", categoryZh: "品牌视觉 · 展览传播", year: "2026", period: "2026.02 — 2026.06",
+    location: "马来西亚 · 吉隆坡", locationEn: "Kuala Lumpur, Malaysia",
+    organization: "Momentus 2026 毕业展宣传组", organizationEn: "Momentus 2026 Showcase Publicity Team",
     role: "Visual Design Lead · Department Chair Assistant", roleZh: "视觉设计负责人 · 系主任助理",
     description: "A consistent visual identity and campaign system for Cinema of Voices, the 10th graduate showcase.",
     descriptionZh: "围绕第十届毕业展主题「Cinema of Voices」建立视觉体系，统筹宣传物料与跨团队协作。",
@@ -46,7 +54,7 @@ export const projectWorks = [
     backgroundEn: "The showcase needed a consistent visual language across student projects and communication channels, with coordinated campaign delivery throughout the two-day exhibition.",
     contributions: [
       ["建立品牌视觉体系，设计 8 套社媒模板及 4 套版式规范。", "Built the visual identity, eight social media templates and four layout systems."],
-      ["统筹各参展项目宣传图片的后期处理与制作，保障物料统一输出。", "Coordinated post-production and preparation of promotional images across participating projects."],
+      ["统筹各参展项目宣传图片的后期处理与制作，保障两天展览期间宣传物料的视觉一致与统一输出。", "Coordinated post-production and preparation of promotional images across participating projects, ensuring consistent visual materials throughout the two-day exhibition."],
       ["协助系主任进行跨团队人员协调与项目进度汇报。", "Supported the department chair with cross-team coordination and progress reporting."],
     ],
     outcomes: [["官方账号曝光量较上一届提升 40%。", "Official account exposure increased 40% compared with the previous showcase."]],
@@ -54,6 +62,8 @@ export const projectWorks = [
   {
     id: "amor-mundi", title: "Amor Mundi Lab", titleZh: "Amor Mundi 多物种生态世界建构实验室",
     category: "Research · Audiovisual communication", categoryZh: "民族志研究 · 视听传播", year: "2024–2025", period: "2024.11 — 2025.03",
+    location: "泰国 · 清迈", locationEn: "Chiang Mai, Thailand",
+    organization: "Amor Mundi 多物种生态世界建构实验室", organizationEn: "Amor Mundi Lab",
     role: "Research Assistant · Music & Video Creator", roleZh: "研究助理 · 音乐与影像创作",
     description: "Ethnographic research support and a music film bringing the lab's work to a wider audience.",
     descriptionZh: "参与民族志研究、文献整理与访谈编码，并通过原创音乐与影像传播实验室研究成果。",
@@ -70,6 +80,8 @@ export const projectWorks = [
   {
     id: "culture-night", title: "Culture Night", titleZh: "东盟文化之夜",
     category: "Event film · Original music", categoryZh: "活动影片 · 原创音乐", year: "2023", period: "2023.08",
+    location: "泰国 · 清迈", locationEn: "Chiang Mai, Thailand",
+    organization: "东盟文化之夜活动晚会", organizationEn: "ASEAN Culture Night",
     role: "Video Producer · Editor · Music Creator", roleZh: "视频制片 · 剪辑 · 音乐创作",
     description: "A documentary-style event film and original experimental music for an ASEAN cultural evening.",
     descriptionZh: "为东盟文化晚会创作纪录片风格活动影片与原创实验音乐。",
@@ -81,5 +93,23 @@ export const projectWorks = [
       ["创作原创实验音乐《CULTURE》，作为闭幕影片配乐。", "Created the original experimental track CULTURE for the closing film."],
     ],
     outcomes: [["影片用于拥有 200 余名观众的东盟文化晚会。", "The film was presented at an ASEAN cultural evening attended by more than 200 people."]],
+  },
+  {
+    id: "independent-audiovisual", title: "Independent Audiovisual Practice", titleZh: "个人视听创作系列",
+    category: "Film · Documentary · Music", categoryZh: "剧情短片 · 纪录片 · 音乐影像", year: "2023–2026", period: "2023.09 — 2026.06",
+    role: "Producer · Director · Editor", roleZh: "制片 · 导演 · 剪辑",
+    description: "An independent body of narrative shorts, documentaries, a cultural vlog and a music film.",
+    descriptionZh: "从剧情短片、纪录片到文化 Vlog 与音乐影像，持续探索不同形式的视听表达。",
+    cover: "", coverType: "independent",
+    background: "以个人视听作品集为线索，持续进行独立创作与团队项目，在不同题材和制作规模中积累制片、导演与剪辑经验。",
+    backgroundEn: "An ongoing body of independent and collaborative audiovisual work, developing production, directing and editing experience across different subjects and production scales.",
+    contributions: [
+      ["独立制作或主导完成 3 部剧情短片、2 部纪录片、1 部文化 Vlog 及 1 部主题音乐短片。", "Independently produced or led three narrative shorts, two documentaries, one cultural vlog and one music film."],
+      ["承担制片、导演与剪辑工作，根据不同项目完成从策划到成片的制作。", "Worked as producer, director and editor, taking projects from planning through to finished films."],
+    ],
+    outcomes: [
+      ["本系列作品总时长超过 40 分钟。", "The works in this series total over 40 minutes."],
+      ["本系列全网累计播放超过 5 万次，单部作品最高播放 1.8 万次。", "The series received over 50,000 views across platforms, with its most-viewed individual work reaching 18,000 views."],
+    ],
   },
 ]

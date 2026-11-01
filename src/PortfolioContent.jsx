@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { imageWorks, musicArtist, musicWorks, socialLinks, videoWorks } from "./works.js"
 import { projectWorks } from "./projects.js"
 import { assetUrl } from "./assetUrl.js"
+import './project-details.css'
 
 const tx = (language, zh, en) => language === "en" ? en : zh
 
@@ -29,8 +30,8 @@ function WorkCover({ work }) {
   const [failed, setFailed] = useState(false)
   if (work.cover && !failed) return <img src={assetUrl(work.cover)} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setFailed(true)} />
   return <div className={`work-cover-art art-${work.coverType || "type"}`} aria-hidden="true">
-    <span>{work.coverType === "clock" ? "WAKE UP BEFORE" : "CULTURE / 2023"}</span>
-    <b>{work.coverType === "clock" ? "23:17" : "NIGHT"}</b><i />
+    <span>{work.coverType === "clock" ? "WAKE UP BEFORE" : work.coverType === "independent" ? "INDEPENDENT / 2023—2026" : "CULTURE / 2023"}</span>
+    <b>{work.coverType === "clock" ? "23:17" : work.coverType === "independent" ? "FRAME / SOUND" : "NIGHT"}</b><i />
   </div>
 }
 
@@ -135,6 +136,10 @@ export function ProjectModal({ item, language, onClose, onVideo }) {
   const relatedVideo = videoWorks.find(work => work.id === item.relatedVideoId)
   return <DialogFrame title={copy ? item.title : item.titleZh} language={language} onClose={onClose}>
     <header className="detail-heading"><p className="eyebrow">{copy ? item.category : item.categoryZh} · {item.period}</p><h2>{copy ? item.title : item.titleZh}</h2><p className="detail-role">{copy ? item.role : item.roleZh}</p></header>
+    {(item.location || item.organization) && <dl className="project-facts">
+      {item.location && <div><dt>{copy ? item.locationLabelEn || 'Location' : item.locationLabel || '项目地点'}</dt><dd>{copy ? item.locationEn : item.location}</dd></div>}
+      {item.organization && <div><dt>{tx(language, '机构 / 活动', 'Organisation / event')}</dt><dd>{copy ? item.organizationEn : item.organization}</dd></div>}
+    </dl>}
     <div className="project-detail-art"><WorkCover work={item} /></div>
     <div className="detail-body">
       <section><h3>{tx(language, "项目背景", "Context")}</h3><p>{copy ? item.backgroundEn : item.background}</p></section>
