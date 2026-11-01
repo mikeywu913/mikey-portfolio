@@ -45,6 +45,11 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
   }
   const heading = headings[archive]
   const projectLabel = value => copy && value === "IMA 社媒运营" ? "IMA Social Media" : value
+  const playAudio = work => {
+    if (playingTrack === work.id) audioRef.current?.pause()
+    else if (currentTrack?.id === work.id) audioRef.current?.play().catch(() => {})
+    else if (work.src) activeTrack(work)
+  }
 
   return <main className="archive-page">
     <div className="archive-page-heading">
@@ -80,15 +85,13 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
         <div className={`music-row ${playingTrack === work.id ? "is-playing" : ""}`}>
           <button className="track-play" disabled={!work.src && !work.videoUrl} onClick={() => {
             if (work.videoUrl) { activeVideo(work); return }
-            if (playingTrack === work.id) audioRef.current?.pause()
-            else if (currentTrack?.id === work.id) audioRef.current?.play().catch(() => {})
-            else if (work.src) activeTrack(work)
+            playAudio(work)
           }} aria-label={`${work.videoUrl ? tx(language, "观看", "Watch") : tx(language, "播放", "Play")} ${work.title}`}>{playingTrack === work.id ? "Ⅱ" : "▶"}</button>
           <img className="track-cover" src={assetUrl(work.cover)} alt="" loading="lazy" />
-          <div className="track-title"><b>{work.title}</b><span>{work.project}</span>{work.videoUrl && <button className="track-detail-button" onClick={() => activeVideo(work)}>{tx(language, "观看 MV / 作品详情", "Watch MV / work details")} ↗</button>}</div>
+          <div className="track-title"><b>{work.title}</b><span>{copy ? work.projectEn || work.project : work.project}</span><small className="track-release">{tx(language, '发布于', 'Released')} {work.publishedAt}</small>{work.videoUrl && <div className="track-actions"><button className="track-detail-button" onClick={() => activeVideo(work)}>{tx(language, "观看 MV", "Watch MV")} · {work.videoDuration} ↗</button><button className="track-detail-button" onClick={() => playAudio(work)}>{playingTrack === work.id ? tx(language, '暂停音频', 'Pause audio') : tx(language, '试听音频', 'Listen to audio')}</button></div>}</div>
           <span className="track-year">{work.year}</span><span className="track-duration">{Number.isFinite(work.duration) ? `${Math.floor(work.duration / 60)}:${String(work.duration % 60).padStart(2, "0")}` : work.videoUrl ? "MV" : "—:—"}</span>
         </div>
-        <p className="music-description">{copy ? work.descriptionEn : work.description}</p>
+        {(copy ? work.descriptionEn : work.description) && <p className="music-description">{copy ? work.descriptionEn : work.description}</p>}
       </article>)}
     </section>}
 
@@ -172,7 +175,7 @@ export function MediaModal({ type, item, onClose, language }) {
   const video = type === "video" ? videoSource(sourceUrl) : null
   return <DialogFrame title={title} language={language} onClose={onClose} image={type === "image"}>
     {type === "image" ? <figure><img src={assetUrl(item.src)} alt={item.title} /><figcaption>{item.title}<span>{copy ? item.projectEn || item.project : item.project}{item.year ? ` · ${item.year}` : ""}</span></figcaption></figure> : <>
-      <header className="detail-heading"><p className="eyebrow">{item.publishedAt ? `${tx(language, "发布于", "PUBLISHED")} ${item.publishedAt}` : item.year || tx(language, "短片作品", "SHORT FILM")}{typeof item.duration === "string" && item.duration ? ` · ${item.duration}` : ""}</p><h2>{title}</h2><p className="detail-role">{copy ? item.roleEn : item.role}</p></header>
+      <header className="detail-heading"><p className="eyebrow">{item.publishedAt ? `${tx(language, "发布于", "PUBLISHED")} ${item.publishedAt}` : item.year || tx(language, "短片作品", "SHORT FILM")}{item.videoDuration || typeof item.duration === 'string' && item.duration ? ` · ${item.videoDuration || item.duration}` : ''}</p><h2>{title}</h2><p className="detail-role">{copy ? item.roleEn : item.role}</p></header>
       <div className="video-dialog">
         {video?.kind === "embed" ? <iframe src={video.src} title={title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen /> : video?.kind === "file" ? <video src={video.src} controls autoPlay /> : <div className="unavailable-media"><p>{tx(language, "在原平台观看这部作品。", "Watch this work on its original platform.")}</p></div>}
       </div>

@@ -1,3 +1,4 @@
+import { musicCatalog } from './musicCatalog.js'
 // Owner-supplied credits; public Bilibili dates and durations verified on 2026-10-26.
 const bili = (id) => `https://www.bilibili.com/video/${id}/`
 export const musicArtist = { name: "MiKeY不是米奇", url: "https://music.163.com/#/artist?id=36338148" }
@@ -67,6 +68,6 @@ export const imageWorks = [
   { id: "chiang-mai", kind: "photography", title: "CHIANG MAI", project: "CHIANG MAI", projectEn: "CHIANG MAI", year: "", src: "/works/images/chiang-mai.jpg" },
   { id: "ima-process-led", kind: "visual", title: "Find the Right Next Step for Your Child", year: "2026", project: "IMA 社媒运营", projectEn: "IMA Social Media", src: "/works/images/ima-process-led.png" },
 ]
-export const musicWorks = [
-  { ...fire, title: "The Fire is On Us", project: "Amor Mundi Lab", duration: 268, src: "", videoUrl: fire.src },
-]
+export const musicWorks = musicCatalog.map(work => work.id === fire.id
+  ? { ...fire, ...work, videoUrl: fire.src, videoDuration: '4:28' }
+  : work)

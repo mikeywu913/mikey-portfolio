@@ -11,7 +11,7 @@ const categories = [
   { id: "video", title: "影像", titleEn: "Film & Motion", label: "FILM · DOCUMENTARY · SOCIAL", labelZh: "短片 · 纪录 · 社交内容", preview: "/works/images/voice-of-penny-poster.png", total: videoWorks.length },
   { id: "photography", title: "摄影", titleEn: "Photography", label: "LIGHT · PLACES · MOMENTS", labelZh: "光影 · 地点 · 瞬间", preview: "/works/images/chiang-mai.jpg", total: imageWorks.filter(w => w.kind === "photography").length },
   { id: "visual", title: "视觉设计", titleEn: "Visual Design", label: "DESIGN · IDENTITY · VISUALS", labelZh: "平面 · 品牌 · 视觉实验", preview: "/works/images/ima-process-led.png", total: imageWorks.filter(w => w.kind === "visual").length },
-  { id: "music", title: "音乐", titleEn: "Music", label: "ORIGINAL MUSIC · SOUND", labelZh: "原创音乐 · 声音设计", preview: "/works/images/the-fire-is-on-us.png", total: musicWorks.length },
+  { id: "music", title: "音乐", titleEn: "Music", label: "ORIGINAL MUSIC · SOUND", labelZh: "原创音乐 · 声音设计", preview: musicWorks.find(work => work.id === 'the-fire-is-on-us').cover, total: musicWorks.length },
 ]
 
 const skillCards = [
@@ -121,7 +121,11 @@ function App() {
       </div>
 
       <AnimatePresence>{activeProject && <ProjectModal key={`project-${activeProject.id}`} item={activeProject} language={language} onClose={() => setActiveProject(null)} onVideo={openVideo} />}{activeVideo && <MediaModal key={`video-${activeVideo.id}`} type="video" item={activeVideo} onClose={() => setActiveVideo(null)} language={language} />}{activeImage && <MediaModal key={`image-${activeImage.id}`} type="image" item={activeImage} onClose={() => setActiveImage(null)} language={language} />}</AnimatePresence>
-      <audio ref={audioRef} onPlay={() => setPlayingTrack(activeTrack?.id ?? null)} onEnded={() => setPlayingTrack(null)} onPause={() => setPlayingTrack(null)} />
+      <div className="audio-dock" hidden={!activeTrack}>
+        <span>{activeTrack?.title}</span>
+        <audio controls preload="metadata" ref={audioRef} onPlay={() => setPlayingTrack(activeTrack?.id ?? null)} onEnded={() => setPlayingTrack(null)} onPause={() => setPlayingTrack(null)} />
+        <button aria-label={tx(language, '关闭播放器', 'Close player')} onClick={() => { audioRef.current?.pause(); setActiveTrack(null) }}>×</button>
+      </div>
     </div>
   )
 }

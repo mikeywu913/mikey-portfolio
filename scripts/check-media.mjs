@@ -7,6 +7,11 @@ import { projectWorks } from '../src/projects.js'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const errors = []
 const publicPaths = new Set(['favicon.svg'])
+for (const work of [...videoWorks, ...imageWorks, ...musicWorks, ...projectWorks]) {
+  for (const key of ['src', 'cover']) {
+    if (work[key]?.startsWith('/works/')) publicPaths.add(work[key].slice(1))
+  }
+}
 
 async function checkCaseSensitivePath(file) {
   const parts = relative(root, file).split(sep)
@@ -24,7 +29,9 @@ async function scan(directory) {
     if (entry.isDirectory()) { await scan(file); continue }
     if (!/\.(?:js|jsx|css)$/.test(entry.name)) continue
     const text = await readFile(file, 'utf8')
-    for (const match of text.matchAll(/["'`]\/(works\/[^"'`]+)["'`]/g)) publicPaths.add(match[1])
+    for (const match of text.matchAll(/["'`]\/(works\/[^"'`]+)["'`]/g)) {
+      if (!match[1].includes('${')) publicPaths.add(match[1])
+    }
     for (const match of text.matchAll(/\b(?:from|import)\s*["'](\.[^"']+)["']/g)) {
       try { await checkCaseSensitivePath(resolve(dirname(file), match[1])) }
       catch (error) { errors.push(error.message) }
