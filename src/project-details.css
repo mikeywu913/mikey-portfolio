@@ -3,4 +3,5 @@
 .project-facts dt{font-size:10px;letter-spacing:.08em;color:#b3a59b;margin-bottom:8px}
 .project-facts dd{font-size:13px;line-height:1.8;color:#eee6de;margin:0;overflow-wrap:anywhere}
 .art-independent>b{font-size:clamp(27px,4vw,65px)}
+.about-lead h2.about-personal-title{font-size:clamp(32px,4vw,62px);line-height:1.25}
 @media(max-width:600px){.project-facts{grid-template-columns:1fr;gap:15px;padding:0 22px 24px}.project-facts dd{font-size:12px}}
