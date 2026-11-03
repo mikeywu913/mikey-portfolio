@@ -1,0 +1,15 @@
+.archive-grid.photography-grid{display:block;columns:3;column-gap:24px}
+.photography-grid .image-card{display:inline-block;vertical-align:top;width:100%;aspect-ratio:auto;margin:0 0 24px;break-inside:avoid;background:transparent;overflow:hidden;color:#eee}
+.photography-grid .image-card img{display:block;width:100%;height:auto;object-fit:contain;transition:opacity .45s;transform:none}
+.photography-grid .image-card:hover img{transform:none;opacity:.85}
+.photography-grid .image-caption{position:static;opacity:1;background:none;padding:14px 0 6px;gap:6px}
+.photography-grid .image-caption b{font-size:14px;line-height:1.5}
+.photography-grid .image-caption small{font-size:11px;color:#aaa59f}
+.photography-grid .image-card:focus-visible{outline:1px solid #d98c82;outline-offset:5px}
+.photo-viewer-controls{display:flex;align-items:center;justify-content:center;gap:20px;padding:16px 0 5px;color:#c9c5c0;font-size:12px}
+.photo-viewer-controls button{width:42px;height:42px;background:transparent;border:1px solid #555;color:#eee;font-size:20px;cursor:pointer}
+.photo-viewer-controls button:hover,.photo-viewer-controls button:focus-visible{border-color:#d98c82;color:#d98c82}
+.photo-viewer-controls a{margin-left:18px;color:#d98c82}
+@media(min-width:1800px){.archive-grid.photography-grid{columns:4}}
+@media(max-width:900px){.archive-grid.photography-grid{columns:2;column-gap:16px}}
+@media(max-width:600px){.archive-grid.photography-grid{column-gap:12px}.photography-grid .image-card{margin-bottom:18px}.photography-grid .image-caption{padding-top:10px}.photography-grid .image-caption b{font-size:12px}.photography-grid .image-caption small{font-size:10px}.photo-viewer-controls{gap:12px}.photo-viewer-controls a{margin-left:5px}}

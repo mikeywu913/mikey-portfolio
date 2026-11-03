@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('../', import.meta.url))
 const errors = []
 const publicPaths = new Set(['favicon.svg'])
 for (const work of [...videoWorks, ...imageWorks, ...musicWorks, ...projectWorks]) {
-  for (const key of ['src', 'cover']) {
+  for (const key of ['src', 'cover', 'thumbnail']) {
     if (work[key]?.startsWith('/works/')) publicPaths.add(work[key].slice(1))
   }
 }
@@ -53,7 +53,7 @@ function checkUrl(url, label) {
 }
 
 for (const work of [...videoWorks, ...imageWorks, ...musicWorks, ...projectWorks]) {
-  for (const key of ['src', 'videoUrl', 'cover']) checkUrl(work[key], work.id)
+  for (const key of ['src', 'videoUrl', 'cover', 'thumbnail']) checkUrl(work[key], work.id)
 }
 for (const work of videoWorks) if (!work.src) errors.push(`Missing playback URL: ${work.id}`)
 for (const work of musicWorks) if (!work.src && !work.videoUrl) errors.push(`Missing audio or MV: ${work.id}`)

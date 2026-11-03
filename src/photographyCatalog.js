@@ -1,0 +1,61 @@
+import { photographySizes } from './photographySizes.js'
+
+const photographs = [
+  ['Elephant Twins Painting', '双象壁画', '街头与城市', 'Streets & Cities'],
+  ['The plane and the moon', '飞机与月亮', '自然与风景', 'Nature & Landscapes'],
+  ['Presenting', '表达', '人物与日常', 'People & Everyday'],
+  ['City View_KL', '吉隆坡夜景', '街头与城市', 'Streets & Cities'],
+  ['Heavy Rain_KL', '吉隆坡大雨', '街头与城市', 'Streets & Cities'],
+  ['Yellow Lambo', '黄色兰博基尼', '街头与城市', 'Streets & Cities'],
+  ['Among the Mountains', '群山之间', '人物与日常', 'People & Everyday'],
+  ['Cloud Shrine', '云之殿', '自然与风景', 'Nature & Landscapes'],
+  ['Beachcombing', '赶海', '自然与风景', 'Nature & Landscapes'],
+  ['The Cloud', '那朵云', '自然与风景', 'Nature & Landscapes'],
+  ['CUTE CAT', '小憩', '动物', 'Animals'],
+  ['Vocano view', '俯瞰火山', '自然与风景', 'Nature & Landscapes'],
+  ['The Afternoon', '午后', '街头与城市', 'Streets & Cities'],
+  ['CAT', '回望', '动物', 'Animals'],
+  ['indonesia yogyakarta', '日惹街头', '街头与城市', 'Streets & Cities'],
+  ['Indonesia', '印尼旅途', '人物与日常', 'People & Everyday'],
+  ['CHIANG MAI', '清迈', '自然与风景', 'Nature & Landscapes'],
+  ['New Year Lantern', '新年灯笼', '街头与城市', 'Streets & Cities'],
+  ['The Sunrise and the clouds', '日出与云海', '自然与风景', 'Nature & Landscapes'],
+  ['City Above', '云上之城', '自然与风景', 'Nature & Landscapes'],
+  ['Sneaky Santa', '悄悄爬窗的圣诞老人', '街头与城市', 'Streets & Cities'],
+  ['Classic Ones', '经典唱片', '人物与日常', 'People & Everyday'],
+  ['Petronas Twin Towers 2', '双子塔 · 双塔', '街头与城市', 'Streets & Cities'],
+  ['Petronas Twin Towers 1', '双子塔 · 仰望', '街头与城市', 'Streets & Cities'],
+  ['City in the Rain_Night View', '雨中城市 · 夜', '街头与城市', 'Streets & Cities'],
+  ['The Boat', '泊舟', '自然与风景', 'Nature & Landscapes'],
+  ['River View', '河畔', '自然与风景', 'Nature & Landscapes'],
+  ['The Chicken', '公鸡', '动物', 'Animals'],
+  ['In the Mountain', '山中', '自然与风景', 'Nature & Landscapes'],
+  ['Peak View', '山顶亭', '自然与风景', 'Nature & Landscapes'],
+  ['The Coast', '海岸', '自然与风景', 'Nature & Landscapes'],
+  ['GUANGXI', '广西', '人物与日常', 'People & Everyday'],
+  ['GUANGXI Old Street', '广西老街', '街头与城市', 'Streets & Cities'],
+  ['Chilling Dog', '悠闲的狗', '动物', 'Animals'],
+  ['Walking', '走过', '街头与城市', 'Streets & Cities'],
+  ['Borobudur Temple', '婆罗浮屠', '街头与城市', 'Streets & Cities'],
+  ['HONGKONG STREET', '香港街头', '人物与日常', 'People & Everyday'],
+  ['In Between', '之间', '人物与日常', 'People & Everyday'],
+  ['Alegator_BANGKOK', '曼谷巨蜥', '动物', 'Animals'],
+  ['The Road and Beyond', '路与远方', '自然与风景', 'Nature & Landscapes'],
+  ['City in the Rain', '雨中城市', '街头与城市', 'Streets & Cities'],
+  ['Stretching Bird', '展翅', '动物', 'Animals'],
+  ['The Old Man', '河边的老人', '人物与日常', 'People & Everyday'],
+  ['Lizard on the tree', '树上的蜥蜴', '动物', 'Animals'],
+  ['IloveUM', '我爱马大', '街头与城市', 'Streets & Cities'],
+]
+
+// Titles follow the supplied filenames; dates are left blank until confirmed.
+export const photographyCatalog = photographs.map(([filename, title, project, projectEn]) => {
+  const slug = filename.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  return {
+    id: `photo-${slug}`, kind: 'photography', title,
+    titleEn: filename === 'Vocano view' ? 'Volcano View' : filename === 'Alegator_BANGKOK' ? 'Monitor Lizard · Bangkok' : filename.replaceAll('_', ' · '),
+    project, projectEn, year: '', width: photographySizes[slug][0], height: photographySizes[slug][1],
+    src: `/works/photography/originals/${slug}.jpg`,
+    thumbnail: `/works/photography/previews/${slug}.webp`,
+  }
+})

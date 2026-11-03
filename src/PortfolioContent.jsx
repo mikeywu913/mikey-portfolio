@@ -4,6 +4,7 @@ import { imageWorks, musicArtist, musicWorks, socialLinks, videoWorks } from "./
 import { projectWorks } from "./projects.js"
 import { assetUrl } from "./assetUrl.js"
 import './project-details.css'
+import './photography.css'
 
 const tx = (language, zh, en) => language === "en" ? en : zh
 
@@ -45,7 +46,7 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
     music: ["音乐", "Music", "原创音乐 · 声音设计", "ORIGINAL MUSIC · SOUND", musicWorks.length],
   }
   const heading = headings[archive]
-  const projectLabel = value => copy && value === "IMA 社媒运营" ? "IMA Social Media" : value
+  const projectLabel = value => copy ? imageWorks.find(work => work.project === value)?.projectEn || value : value
   const playAudio = work => {
     if (playingTrack === work.id) audioRef.current?.pause()
     else if (currentTrack?.id === work.id) audioRef.current?.play().catch(() => {})
@@ -75,8 +76,8 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
     </section>}
 
     {["photography", "visual"].includes(archive) && <>
-      <div className="filters"><label>{tx(language, "项目", "Project")}<select value={projectFilter} onChange={event => setProjectFilter(event.target.value)}><option value="all">{tx(language, "全部项目", "All projects")}</option>{projects.map(item => <option key={item} value={item}>{projectLabel(item)}</option>)}</select></label><label>{tx(language, "年份", "Year")}<select value={yearFilter} onChange={event => setYearFilter(event.target.value)}><option value="all">{tx(language, "全部年份", "All years")}</option>{years.map(item => <option key={item}>{item}</option>)}</select></label><span>{visibleImages.length} {tx(language, "件作品", "works")}</span></div>
-      <section className="archive-grid image-grid">{visibleImages.map(work => <button className="image-card" key={work.id} onClick={() => activeImage(work)}><img src={assetUrl(work.src)} alt={work.title} loading="lazy" /><span className="image-caption"><b>{work.title}</b><small>{projectLabel(work.project)}{work.year ? ` · ${work.year}` : ""}</small></span></button>)}</section>
+      <div className="filters"><label>{archive === 'photography' ? tx(language, "主题", "Theme") : tx(language, "项目", "Project")}<select value={projectFilter} onChange={event => setProjectFilter(event.target.value)}><option value="all">{archive === 'photography' ? tx(language, "全部主题", "All themes") : tx(language, "全部项目", "All projects")}</option>{projects.map(item => <option key={item} value={item}>{projectLabel(item)}</option>)}</select></label>{years.length > 0 && <label>{tx(language, "年份", "Year")}<select value={yearFilter} onChange={event => setYearFilter(event.target.value)}><option value="all">{tx(language, "全部年份", "All years")}</option>{years.map(item => <option key={item}>{item}</option>)}</select></label>}<span aria-live="polite">{visibleImages.length} {tx(language, "件作品", "works")}</span></div>
+      <section className={`archive-grid image-grid ${archive === 'photography' ? 'photography-grid' : ''}`} aria-label={heading[copy ? 1 : 0]}>{visibleImages.map(work => <button className="image-card" key={work.id} onClick={() => activeImage(work)}><img width={work.width} height={work.height} src={assetUrl(work.thumbnail || work.src)} alt={copy ? work.titleEn || work.title : work.title} loading="lazy" decoding="async" /><span className="image-caption"><b>{copy ? work.titleEn || work.title : work.title}</b><small>{projectLabel(work.project)}{work.year ? ` · ${work.year}` : ""}</small></span></button>)}</section>
       {!visibleImages.length && <p className="archive-note">{tx(language, "暂无符合筛选条件的作品。", "No works match these filters.")}</p>}
     </>}
 
@@ -173,13 +174,26 @@ function videoSource(url) {
   return { kind: "link", src: url }
 }
 
-export function MediaModal({ type, item, onClose, language }) {
+export function MediaModal({ type, item, onClose, language, images = [], onNavigate }) {
   const copy = language === "en"
   const title = copy ? item.titleEn || item.title : item.title
   const sourceUrl = assetUrl(item.videoUrl || item.src)
   const video = type === "video" ? videoSource(sourceUrl) : null
+  const imageIndex = images.findIndex(work => work.id === item.id)
+  const canNavigate = type === 'image' && images.length > 1 && onNavigate
+  useEffect(() => {
+    if (!canNavigate) return
+    const onKey = event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault()
+        onNavigate(images[(imageIndex + (event.key === 'ArrowRight' ? 1 : -1) + images.length) % images.length])
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [canNavigate, imageIndex, images, onNavigate])
   return <DialogFrame title={title} language={language} onClose={onClose} image={type === "image"}>
-    {type === "image" ? <figure><img src={assetUrl(item.src)} alt={item.title} /><figcaption>{item.title}<span>{copy ? item.projectEn || item.project : item.project}{item.year ? ` · ${item.year}` : ""}</span></figcaption></figure> : <>
+    {type === "image" ? <><figure><img src={assetUrl(item.src)} alt={title} /><figcaption>{title}<span>{copy ? item.projectEn || item.project : item.project}{item.year ? ` · ${item.year}` : ""}</span></figcaption></figure><div className="photo-viewer-controls">{canNavigate && <><button onClick={() => onNavigate(images[(imageIndex - 1 + images.length) % images.length])} aria-label={tx(language, '上一张', 'Previous photograph')}>←</button><span aria-live="polite">{imageIndex + 1} / {images.length}</span><button onClick={() => onNavigate(images[(imageIndex + 1) % images.length])} aria-label={tx(language, '下一张', 'Next photograph')}>→</button></>}<a href={assetUrl(item.src)} target="_blank" rel="noreferrer">{tx(language, '查看原图', 'Open original')} ↗</a></div></> : <>
       <header className="detail-heading"><p className="eyebrow">{item.publishedAt ? `${tx(language, "发布于", "PUBLISHED")} ${item.publishedAt}` : item.year || tx(language, "短片作品", "SHORT FILM")}{item.videoDuration || typeof item.duration === 'string' && item.duration ? ` · ${item.videoDuration || item.duration}` : ''}</p><h2>{title}</h2><p className="detail-role">{copy ? item.roleEn : item.role}</p></header>
       <div className="video-dialog">
         {video?.kind === "embed" ? <iframe src={video.src} title={title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen /> : video?.kind === "file" ? <video src={video.src} controls autoPlay /> : <div className="unavailable-media"><p>{tx(language, "在原平台观看这部作品。", "Watch this work on its original platform.")}</p></div>}
