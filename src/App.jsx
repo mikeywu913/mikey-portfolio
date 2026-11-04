@@ -24,10 +24,12 @@ const skillCards = [
 const tx = (language, zh, en) => language === "en" ? en : zh
 
 function App() {
+  const entry = new URLSearchParams(window.location.search)
+  const linkedWork = videoWorks.find(work => work.id === entry.get("work"))
   const [language, setLanguage] = useState("zh")
-  const [archive, setArchive] = useState(null)
+  const [archive, setArchive] = useState(() => linkedWork ? "video" : categories.some(category => category.id === entry.get("archive")) ? entry.get("archive") : null)
   const [hoveredCategory, setHoveredCategory] = useState(null)
-  const [activeVideo, setActiveVideo] = useState(null)
+  const [activeVideo, setActiveVideo] = useState(linkedWork || null)
   const [activeProject, setActiveProject] = useState(null)
   const [activeImage, setActiveImage] = useState(null)
   const [activeTrack, setActiveTrack] = useState(null)
