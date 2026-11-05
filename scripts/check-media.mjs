@@ -3,12 +3,18 @@ import { dirname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { imageWorks, musicWorks, videoWorks } from '../src/works.js'
 import { projectWorks } from '../src/projects.js'
+import { researchWorks } from '../src/applicationPortfolio.js'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const errors = []
 const publicPaths = new Set(['favicon.svg'])
-for (const work of [...videoWorks, ...imageWorks, ...musicWorks, ...projectWorks]) {
-  for (const key of ['src', 'cover', 'thumbnail']) {
+for (const work of videoWorks) {
+  for (const item of [...work.versions || [], ...work.attachments || []]) {
+    if (item.src?.startsWith('/works/')) publicPaths.add(item.src.slice(1))
+  }
+}
+for (const work of [...videoWorks, ...imageWorks, ...musicWorks, ...projectWorks, ...researchWorks]) {
+  for (const key of ['src', 'cover', 'thumbnail', 'attachment']) {
     if (work[key]?.startsWith('/works/')) publicPaths.add(work[key].slice(1))
   }
 }
@@ -52,8 +58,8 @@ function checkUrl(url, label) {
   } catch { errors.push(`Invalid media URL in ${label}: ${url}`) }
 }
 
-for (const work of [...videoWorks, ...imageWorks, ...musicWorks, ...projectWorks]) {
-  for (const key of ['src', 'videoUrl', 'cover', 'thumbnail']) checkUrl(work[key], work.id)
+for (const work of [...videoWorks, ...imageWorks, ...musicWorks, ...projectWorks, ...researchWorks]) {
+  for (const key of ['src', 'videoUrl', 'cover', 'thumbnail', 'attachment']) checkUrl(work[key], work.id)
 }
 for (const work of videoWorks) if (!work.src) errors.push(`Missing playback URL: ${work.id}`)
 for (const work of musicWorks) if (!work.src && !work.videoUrl) errors.push(`Missing audio or MV: ${work.id}`)

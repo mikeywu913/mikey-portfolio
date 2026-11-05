@@ -5,6 +5,7 @@ import { imageWorks, musicWorks, videoWorks } from "./works.js"
 import { projectWorks } from "./projects.js"
 import { ArchivePage, ContactDetails, MediaModal, MoreWorks, ProjectModal } from "./PortfolioContent.jsx"
 import { assetUrl } from "./assetUrl.js"
+import { researchWorks } from './applicationPortfolio.js'
 
 const categories = [
   { id: "project", title: "项目", titleEn: "Projects", label: "SELECTED CASES", labelZh: "精选案例", preview: "/works/images/momentus-2026.jpg.png", total: projectWorks.length },
@@ -12,6 +13,7 @@ const categories = [
   { id: "photography", title: "摄影", titleEn: "Photography", label: "LIGHT · PLACES · MOMENTS", labelZh: "光影 · 地点 · 瞬间", preview: "/works/images/chiang-mai.jpg", total: imageWorks.filter(w => w.kind === "photography").length },
   { id: "visual", title: "视觉设计", titleEn: "Visual Design", label: "DESIGN · IDENTITY · VISUALS", labelZh: "平面 · 品牌 · 视觉实验", preview: "/works/images/ima-process-led.png", total: imageWorks.filter(w => w.kind === "visual").length },
   { id: "music", title: "音乐", titleEn: "Music", label: "ORIGINAL MUSIC · SOUND", labelZh: "原创音乐 · 声音设计", preview: musicWorks.find(work => work.id === 'the-fire-is-on-us').cover, total: musicWorks.length },
+  { id: "research", title: "研究与写作", titleEn: "Research & Writing", label: "MEDIA · CULTURE · RESEARCH", labelZh: "媒体 · 文化 · 研究", preview: "/works/images/voice-of-penny-poster.png", total: researchWorks.length },
 ]
 
 const skillCards = [

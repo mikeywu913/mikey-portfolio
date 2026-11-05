@@ -5,6 +5,7 @@ import { projectWorks } from "./projects.js"
 import { assetUrl } from "./assetUrl.js"
 import './project-details.css'
 import './photography.css'
+import { researchWorks } from './applicationPortfolio.js'
 
 const tx = (language, zh, en) => language === "en" ? en : zh
 
@@ -39,6 +40,7 @@ function WorkCover({ work }) {
 export function ArchivePage({ archive, language, onBack, openProject, activeVideo, activeImage, activeTrack, currentTrack, playingTrack, audioRef, projectFilter, setProjectFilter, yearFilter, setYearFilter, visibleImages, projects, years }) {
   const copy = language === "en"
   const headings = {
+    research: ['研究与写作', 'Research & Writing', '论文 · 研究计划 · 制作报告', 'PAPERS · PROPOSALS · PRODUCTION REPORTS', researchWorks.length],
     project: ["项目", "Projects", "精选案例", "SELECTED CASES", projectWorks.length],
     video: ["影像", "Film & Motion", "短片 · 纪录 · 社交内容", "FILM · DOCUMENTARY · SOCIAL", videoWorks.length],
     photography: ["摄影", "Photography", "光影 · 地点 · 瞬间", "LIGHT · PLACES · MOMENTS", imageWorks.filter(w => w.kind === "photography").length],
@@ -60,6 +62,8 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
       <div className="archive-heading-row"><div><h1>{heading[copy ? 1 : 0]}</h1><p>{heading[copy ? 3 : 2]}</p></div><span className="archive-count">{String(heading[4]).padStart(2, "0")} <small>{tx(language, "件作品", "WORKS")}</small></span></div>
     </div>
 
+    {archive === 'research' && <section className="archive-grid research-grid">{researchWorks.map(work => <article className="research-card" key={work.id}><p className="eyebrow">{copy ? work.projectEn : work.project}{work.year ? ` · ${work.year}` : ''}</p><h2>{copy ? work.titleEn : work.title}</h2><p>{copy ? work.descriptionEn : work.description}</p><a className="detail-link" href={assetUrl(work.src)} target="_blank" rel="noreferrer">{work.format === 'PDF' ? tx(language, '阅读报告', 'Read report') : tx(language, '下载文稿', 'Download paper')} · {work.format} ↗</a></article>)}</section>}
+
     {archive === "project" && <section className="archive-grid project-archive-grid">
       {projectWorks.map((work, index) => <motion.article className="project-archive-card" key={work.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .85, delay: index * .09, ease: [0.16, 1, .3, 1] }}>
         <button className="project-cover-button" onClick={() => openProject(work)} aria-label={`${tx(language, "查看项目", "View project")} ${copy ? work.title : work.titleZh}`}><WorkCover work={work} /></button>
@@ -77,7 +81,7 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
 
     {["photography", "visual"].includes(archive) && <>
       <div className="filters"><label>{archive === 'photography' ? tx(language, "主题", "Theme") : tx(language, "项目", "Project")}<select value={projectFilter} onChange={event => setProjectFilter(event.target.value)}><option value="all">{archive === 'photography' ? tx(language, "全部主题", "All themes") : tx(language, "全部项目", "All projects")}</option>{projects.map(item => <option key={item} value={item}>{projectLabel(item)}</option>)}</select></label>{years.length > 0 && <label>{tx(language, "年份", "Year")}<select value={yearFilter} onChange={event => setYearFilter(event.target.value)}><option value="all">{tx(language, "全部年份", "All years")}</option>{years.map(item => <option key={item}>{item}</option>)}</select></label>}<span aria-live="polite">{visibleImages.length} {tx(language, "件作品", "works")}</span></div>
-      <section className={`archive-grid image-grid ${archive === 'photography' ? 'photography-grid' : ''}`} aria-label={heading[copy ? 1 : 0]}>{visibleImages.map(work => <button className="image-card" key={work.id} onClick={() => activeImage(work)}><img width={work.width} height={work.height} src={assetUrl(work.thumbnail || work.src)} alt={copy ? work.titleEn || work.title : work.title} loading="lazy" decoding="async" /><span className="image-caption"><b>{copy ? work.titleEn || work.title : work.title}</b><small>{projectLabel(work.project)}{work.year ? ` · ${work.year}` : ""}</small></span></button>)}</section>
+      <section className="archive-grid image-grid photography-grid" aria-label={heading[copy ? 1 : 0]}>{visibleImages.map(work => <button className="image-card" key={work.id} onClick={() => activeImage(work)}><img width={work.width} height={work.height} src={assetUrl(work.thumbnail || work.src)} alt={copy ? work.titleEn || work.title : work.title} loading="lazy" decoding="async" /><span className="image-caption"><b>{copy ? work.titleEn || work.title : work.title}</b><small>{projectLabel(work.project)}{work.year ? ` · ${work.year}` : ""}</small></span></button>)}</section>
       {!visibleImages.length && <p className="archive-note">{tx(language, "暂无符合筛选条件的作品。", "No works match these filters.")}</p>}
     </>}
 
@@ -175,9 +179,10 @@ function videoSource(url) {
 }
 
 export function MediaModal({ type, item, onClose, language, images = [], onNavigate }) {
+  const [versionIndex, setVersionIndex] = useState(0)
   const copy = language === "en"
   const title = copy ? item.titleEn || item.title : item.title
-  const sourceUrl = assetUrl(item.videoUrl || item.src)
+  const sourceUrl = assetUrl(item.versions?.[versionIndex]?.src || item.videoUrl || item.src)
   const video = type === "video" ? videoSource(sourceUrl) : null
   const imageIndex = images.findIndex(work => work.id === item.id)
   const canNavigate = type === 'image' && images.length > 1 && onNavigate
@@ -193,13 +198,15 @@ export function MediaModal({ type, item, onClose, language, images = [], onNavig
     return () => window.removeEventListener('keydown', onKey)
   }, [canNavigate, imageIndex, images, onNavigate])
   return <DialogFrame title={title} language={language} onClose={onClose} image={type === "image"}>
-    {type === "image" ? <><figure><img src={assetUrl(item.src)} alt={title} /><figcaption>{title}<span>{copy ? item.projectEn || item.project : item.project}{item.year ? ` · ${item.year}` : ""}</span></figcaption></figure><div className="photo-viewer-controls">{canNavigate && <><button onClick={() => onNavigate(images[(imageIndex - 1 + images.length) % images.length])} aria-label={tx(language, '上一张', 'Previous photograph')}>←</button><span aria-live="polite">{imageIndex + 1} / {images.length}</span><button onClick={() => onNavigate(images[(imageIndex + 1) % images.length])} aria-label={tx(language, '下一张', 'Next photograph')}>→</button></>}<a href={assetUrl(item.src)} target="_blank" rel="noreferrer">{tx(language, '查看原图', 'Open original')} ↗</a></div></> : <>
+    {type === "image" ? <><figure><img src={assetUrl(item.src)} alt={title} /><figcaption>{title}<span>{copy ? item.projectEn || item.project : item.project}{item.year ? ` · ${item.year}` : ""}</span></figcaption></figure><div className="photo-viewer-controls">{canNavigate && <><button onClick={() => onNavigate(images[(imageIndex - 1 + images.length) % images.length])} aria-label={tx(language, '上一张', 'Previous photograph')}>←</button><span aria-live="polite">{imageIndex + 1} / {images.length}</span><button onClick={() => onNavigate(images[(imageIndex + 1) % images.length])} aria-label={tx(language, '下一张', 'Next photograph')}>→</button></>}<a href={assetUrl(item.src)} target="_blank" rel="noreferrer">{tx(language, '查看原图', 'Open original')} ↗</a>{item.attachment && <a href={assetUrl(item.attachment)} target="_blank" rel="noreferrer">{tx(language, '阅读 PDF', 'Read PDF')} ↗</a>}</div></> : <>
       <header className="detail-heading"><p className="eyebrow">{item.publishedAt ? `${tx(language, "发布于", "PUBLISHED")} ${item.publishedAt}` : item.year || tx(language, "短片作品", "SHORT FILM")}{item.videoDuration || typeof item.duration === 'string' && item.duration ? ` · ${item.videoDuration || item.duration}` : ''}</p><h2>{title}</h2><p className="detail-role">{copy ? item.roleEn : item.role}</p></header>
-      <div className="video-dialog">
-        {video?.kind === "embed" ? <iframe src={video.src} title={title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen /> : video?.kind === "file" ? <video src={video.src} controls autoPlay /> : <div className="unavailable-media"><p>{tx(language, "在原平台观看这部作品。", "Watch this work on its original platform.")}</p></div>}
+      {item.versions?.length > 1 && <div className="video-versions" aria-label={tx(language, '视频版本', 'Video versions')}>{item.versions.map((version, index) => <button key={version.src} aria-pressed={versionIndex === index} onClick={() => setVersionIndex(index)}>{copy ? version.labelEn : version.label}</button>)}</div>}
+      <div className={`video-dialog ${video?.kind === 'file' ? 'local-video-dialog' : ''}`}>
+        {video?.kind === "embed" ? <iframe src={video.src} title={title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen /> : video?.kind === "file" ? <video key={video.src} src={video.src} poster={assetUrl(item.cover)} controls autoPlay playsInline preload="metadata" /> : <div className="unavailable-media"><p>{tx(language, "在原平台观看这部作品。", "Watch this work on its original platform.")}</p></div>}
       </div>
-      {sourceUrl && <a className="platform-watch-link" href={sourceUrl} target="_blank" rel="noreferrer">{tx(language, "在视频平台打开", "Open on video platform")} ↗</a>}
+      {sourceUrl && <a className="platform-watch-link" href={sourceUrl} target="_blank" rel="noreferrer">{video?.kind === 'file' ? tx(language, '单独打开视频', 'Open video') : tx(language, "在视频平台打开", "Open on video platform")} ↗</a>}
       <WorkInformation item={item} language={language} />
+      {item.attachments?.length > 0 && <section className="detail-body"><h3>{tx(language, '脚本与分镜', 'Scripts & storyboards')}</h3>{item.attachments.map(doc => <p key={doc.src}><a className="detail-link" href={assetUrl(doc.src)} target="_blank" rel="noreferrer">{copy ? doc.labelEn : doc.label} ↗</a></p>)}</section>}
     </>}
   </DialogFrame>
 }

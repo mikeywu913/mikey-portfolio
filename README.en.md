@@ -27,6 +27,7 @@ I like taking an idea from “this could work” to something you can actually w
 | Things I nearly walked past | [Photography](https://mikeywu913.github.io/mikey-portfolio/?archive=photography) |
 | Turning information into images | [Visual design](https://mikeywu913.github.io/mikey-portfolio/?archive=visual) |
 | Another way to hear from me | [Original music](https://mikeywu913.github.io/mikey-portfolio/?archive=music) |
+| The observations behind the work | [Research & writing](https://mikeywu913.github.io/mikey-portfolio/?archive=research) |
 
 Got an idea? [I'd love to hear it.](mailto:827206993@qq.com)
 
