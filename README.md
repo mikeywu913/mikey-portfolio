@@ -1,3 +1,5 @@
+<p align="center"><strong>简体中文</strong> · <a href="README.en.md">English</a></p>
+
 <h1 align="center">MIKEY / 吴骉震</h1>
 <p align="center">有些话适合拍成电影，有些适合写进歌里。</p>
 <p align="center">
