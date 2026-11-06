@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useMemo, useRef, useState } from "react"
-import mikeyCutout from "./assets/mikey-cartoon.png"
+import mikeyCutout from "./assets/mikey-cartoon-selected.png"
 import { imageWorks, musicWorks, videoWorks } from "./works.js"
 import { projectWorks } from "./projects.js"
 import { ArchivePage, ContactDetails, MediaModal, MoreWorks, ProjectModal } from "./PortfolioContent.jsx"
