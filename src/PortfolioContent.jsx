@@ -5,7 +5,6 @@ import { projectWorks } from "./projects.js"
 import { assetUrl } from "./assetUrl.js"
 import './project-details.css'
 import './photography.css'
-import { researchWorks } from './applicationPortfolio.js'
 
 const tx = (language, zh, en) => language === "en" ? en : zh
 
@@ -40,7 +39,6 @@ function WorkCover({ work }) {
 export function ArchivePage({ archive, language, onBack, openProject, activeVideo, activeImage, activeTrack, currentTrack, playingTrack, audioRef, projectFilter, setProjectFilter, yearFilter, setYearFilter, visibleImages, projects, years }) {
   const copy = language === "en"
   const headings = {
-    research: ['研究与写作', 'Research & Writing', '论文 · 研究计划 · 制作报告', 'PAPERS · PROPOSALS · PRODUCTION REPORTS', researchWorks.length],
     project: ["项目", "Projects", "精选案例", "SELECTED CASES", projectWorks.length],
     video: ["影像", "Film & Motion", "短片 · 纪录 · 社交内容", "FILM · DOCUMENTARY · SOCIAL", videoWorks.length],
     photography: ["摄影", "Photography", "光影 · 地点 · 瞬间", "LIGHT · PLACES · MOMENTS", imageWorks.filter(w => w.kind === "photography").length],
@@ -62,7 +60,6 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
       <div className="archive-heading-row"><div><h1>{heading[copy ? 1 : 0]}</h1><p>{heading[copy ? 3 : 2]}</p></div><span className="archive-count">{String(heading[4]).padStart(2, "0")} <small>{tx(language, "件作品", "WORKS")}</small></span></div>
     </div>
 
-    {archive === 'research' && <section className="archive-grid research-grid">{researchWorks.map(work => <article className="research-card" key={work.id}><p className="eyebrow">{copy ? work.projectEn : work.project}{work.year ? ` · ${work.year}` : ''}</p><h2>{copy ? work.titleEn : work.title}</h2><p>{copy ? work.descriptionEn : work.description}</p><a className="detail-link" href={assetUrl(work.src)} target="_blank" rel="noreferrer">{work.format === 'PDF' ? tx(language, '阅读报告', 'Read report') : tx(language, '下载文稿', 'Download paper')} · {work.format} ↗</a></article>)}</section>}
 
     {archive === "project" && <section className="archive-grid project-archive-grid">
       {projectWorks.map((work, index) => <motion.article className="project-archive-card" key={work.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .85, delay: index * .09, ease: [0.16, 1, .3, 1] }}>
@@ -81,7 +78,7 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
 
     {["photography", "visual"].includes(archive) && <>
       <div className="filters"><label>{archive === 'photography' ? tx(language, "主题", "Theme") : tx(language, "项目", "Project")}<select value={projectFilter} onChange={event => setProjectFilter(event.target.value)}><option value="all">{archive === 'photography' ? tx(language, "全部主题", "All themes") : tx(language, "全部项目", "All projects")}</option>{projects.map(item => <option key={item} value={item}>{projectLabel(item)}</option>)}</select></label>{years.length > 0 && <label>{tx(language, "年份", "Year")}<select value={yearFilter} onChange={event => setYearFilter(event.target.value)}><option value="all">{tx(language, "全部年份", "All years")}</option>{years.map(item => <option key={item}>{item}</option>)}</select></label>}<span aria-live="polite">{visibleImages.length} {tx(language, "件作品", "works")}</span></div>
-      <section className="archive-grid image-grid photography-grid" aria-label={heading[copy ? 1 : 0]}>{visibleImages.map(work => <button className="image-card" key={work.id} onClick={() => activeImage(work)}><img width={work.width} height={work.height} src={assetUrl(work.thumbnail || work.src)} alt={copy ? work.titleEn || work.title : work.title} loading="lazy" decoding="async" /><span className="image-caption"><b>{copy ? work.titleEn || work.title : work.title}</b><small>{projectLabel(work.project)}{work.year ? ` · ${work.year}` : ""}</small></span></button>)}</section>
+      {(archive === 'visual' ? [...new Set(visibleImages.map(w => w.project))] : [null]).map(group => <section className="visual-category" key={group || 'photography'}>{group && <h2 className="visual-category-title">{projectLabel(group)}</h2>}<div className="archive-grid image-grid photography-grid">{visibleImages.filter(w => !group || w.project === group).map(work => <button className="image-card" key={work.id} onClick={() => activeImage(work)}><img width={work.width} height={work.height} src={assetUrl(work.thumbnail || work.src)} alt={copy ? work.titleEn || work.title : work.title} loading="lazy" decoding="async" /><span className="image-caption"><b>{copy ? work.titleEn || work.title : work.title}</b><small>{work.slides ? `${work.slides.length} ${tx(language, '页轮播', 'slides')}` : projectLabel(work.project)}</small></span></button>)}</div></section>)}
       {!visibleImages.length && <p className="archive-note">{tx(language, "暂无符合筛选条件的作品。", "No works match these filters.")}</p>}
     </>}
 
@@ -94,10 +91,10 @@ export function ArchivePage({ archive, language, onBack, openProject, activeVide
             playAudio(work)
           }} aria-label={`${work.videoUrl ? tx(language, "观看", "Watch") : tx(language, "播放", "Play")} ${work.title}`}>{playingTrack === work.id ? "Ⅱ" : "▶"}</button>
           <img className="track-cover" src={assetUrl(work.cover)} alt="" loading="lazy" />
-          <div className="track-title"><b>{work.title}</b><span>{copy ? work.projectEn || work.project : work.project}</span><small className="track-release">{tx(language, '发布于', 'Released')} {work.publishedAt}</small>{work.videoUrl && <div className="track-actions"><button className="track-detail-button" onClick={() => activeVideo(work)}>{tx(language, "观看 MV", "Watch MV")} · {work.videoDuration} ↗</button><button className="track-detail-button" onClick={() => playAudio(work)}>{playingTrack === work.id ? tx(language, '暂停音频', 'Pause audio') : tx(language, '试听音频', 'Listen to audio')}</button></div>}</div>
+          <div className="track-title"><b>{work.title}</b><span>{copy ? work.projectEn || work.project : work.project}</span><small className="track-release">{tx(language, '发布于', 'Released')} {work.publishedAt}</small>{work.videoUrl && <div className="track-actions"><button className="track-detail-button" onClick={() => activeVideo(work)}>{tx(language, "观看 MV", "Watch MV")} · {work.videoDuration} ↗</button>{work.id !== "the-fire-is-on-us" && <button className="track-detail-button" onClick={() => playAudio(work)}>{playingTrack === work.id ? tx(language, '暂停音频', 'Pause audio') : tx(language, '试听音频', 'Listen to audio')}</button>}</div>}</div>
           <span className="track-year">{work.year}</span><span className="track-duration">{Number.isFinite(work.duration) ? `${Math.floor(work.duration / 60)}:${String(work.duration % 60).padStart(2, "0")}` : work.videoUrl ? "MV" : "—:—"}</span>
         </div>
-        {(copy ? work.descriptionEn : work.description) && <p className="music-description">{copy ? work.descriptionEn : work.description}</p>}
+        {work.id !== "the-fire-is-on-us" && (copy ? work.descriptionEn : work.description) && <p className="music-description">{copy ? work.descriptionEn : work.description}</p>}
       </article>)}
     </section>}
 
@@ -184,21 +181,23 @@ export function MediaModal({ type, item, onClose, language, images = [], onNavig
   const title = copy ? item.titleEn || item.title : item.title
   const sourceUrl = assetUrl(item.versions?.[versionIndex]?.src || item.videoUrl || item.src)
   const video = type === "video" ? videoSource(sourceUrl) : null
-  const imageIndex = images.findIndex(work => work.id === item.id)
-  const canNavigate = type === 'image' && images.length > 1 && onNavigate
+  const viewerImages = item.slides ? item.slides.map((_, slideIndex) => ({ ...item, slideIndex })) : images
+  const shown = item.slides?.[item.slideIndex || 0] || item
+  const imageIndex = item.slides ? item.slideIndex || 0 : images.findIndex(work => work.id === item.id)
+  const canNavigate = type === 'image' && viewerImages.length > 1 && onNavigate
   useEffect(() => {
     if (!canNavigate) return
     const onKey = event => {
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault()
-        onNavigate(images[(imageIndex + (event.key === 'ArrowRight' ? 1 : -1) + images.length) % images.length])
+        onNavigate(viewerImages[(imageIndex + (event.key === 'ArrowRight' ? 1 : -1) + viewerImages.length) % viewerImages.length])
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [canNavigate, imageIndex, images, onNavigate])
+  }, [canNavigate, imageIndex, viewerImages, onNavigate])
   return <DialogFrame title={title} language={language} onClose={onClose} image={type === "image"}>
-    {type === "image" ? <><figure><img src={assetUrl(item.src)} alt={title} /><figcaption>{title}<span>{copy ? item.projectEn || item.project : item.project}{item.year ? ` · ${item.year}` : ""}</span></figcaption></figure><div className="photo-viewer-controls">{canNavigate && <><button onClick={() => onNavigate(images[(imageIndex - 1 + images.length) % images.length])} aria-label={tx(language, '上一张', 'Previous photograph')}>←</button><span aria-live="polite">{imageIndex + 1} / {images.length}</span><button onClick={() => onNavigate(images[(imageIndex + 1) % images.length])} aria-label={tx(language, '下一张', 'Next photograph')}>→</button></>}<a href={assetUrl(item.src)} target="_blank" rel="noreferrer">{tx(language, '查看原图', 'Open original')} ↗</a>{item.attachment && <a href={assetUrl(item.attachment)} target="_blank" rel="noreferrer">{tx(language, '阅读 PDF', 'Read PDF')} ↗</a>}</div></> : <>
+    {type === "image" ? <>{item.slides && <div className="carousel-strip" aria-label={tx(language, '轮播页码', 'Carousel pages')}>{item.slides.map((slide, index) => <button key={slide.id} aria-label={`${tx(language, '第', 'Page')} ${index + 1}`} aria-pressed={imageIndex === index} onClick={() => onNavigate({ ...item, slideIndex: index })}><img src={assetUrl(slide.thumbnail || slide.src)} alt="" /><span>{index + 1}</span></button>)}</div>}<figure><img src={assetUrl(shown.src)} alt={title} /><figcaption>{title}<span>{copy ? item.projectEn || item.project : item.project}{item.year ? ` · ${item.year}` : ""}</span></figcaption></figure><div className="photo-viewer-controls">{canNavigate && <><button onClick={() => onNavigate(viewerImages[(imageIndex - 1 + viewerImages.length) % viewerImages.length])} aria-label={tx(language, '上一张', 'Previous photograph')}>←</button><span aria-live="polite">{imageIndex + 1} / {viewerImages.length}</span><button onClick={() => onNavigate(viewerImages[(imageIndex + 1) % viewerImages.length])} aria-label={tx(language, '下一张', 'Next photograph')}>→</button></>}<a href={assetUrl(shown.src)} target="_blank" rel="noreferrer">{tx(language, '查看原图', 'Open original')} ↗</a>{item.attachment && <a href={assetUrl(item.attachment)} target="_blank" rel="noreferrer">{tx(language, '阅读 PDF', 'Read PDF')} ↗</a>}</div></> : <>
       <header className="detail-heading"><p className="eyebrow">{item.publishedAt ? `${tx(language, "发布于", "PUBLISHED")} ${item.publishedAt}` : item.year || tx(language, "短片作品", "SHORT FILM")}{item.videoDuration || typeof item.duration === 'string' && item.duration ? ` · ${item.videoDuration || item.duration}` : ''}</p><h2>{title}</h2><p className="detail-role">{copy ? item.roleEn : item.role}</p></header>
       {item.versions?.length > 1 && <div className="video-versions" aria-label={tx(language, '视频版本', 'Video versions')}>{item.versions.map((version, index) => <button key={version.src} aria-pressed={versionIndex === index} onClick={() => setVersionIndex(index)}>{copy ? version.labelEn : version.label}</button>)}</div>}
       <div className={`video-dialog ${video?.kind === 'file' ? 'local-video-dialog' : ''}`}>

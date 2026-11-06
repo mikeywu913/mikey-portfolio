@@ -27,7 +27,6 @@
 | 路过，但没有错过 | [摄影](https://mikeywu913.github.io/mikey-portfolio/?archive=photography) |
 | 把信息变成画面 | [视觉设计](https://mikeywu913.github.io/mikey-portfolio/?archive=visual) |
 | 换一种方式听我说话 | [原创音乐](https://mikeywu913.github.io/mikey-portfolio/?archive=music) |
-| 作品背后的观察与思考 | [研究与写作](https://mikeywu913.github.io/mikey-portfolio/?archive=research) |
 
 你有个想法？[我想听听。](mailto:827206993@qq.com)
 

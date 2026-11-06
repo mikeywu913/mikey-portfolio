@@ -164,11 +164,10 @@ export const visualCatalog = [
     "project": "IMA 社媒运营",
     "projectEn": "IMA Social Media",
     "year": "2026",
-    "src": "/works/application-portfolio/originals/imdc-neurofeedback-program.png",
-    "thumbnail": "/works/application-portfolio/previews/imdc-neurofeedback-program.webp",
+    "src": "/works/application-portfolio/originals/imdc-neurofeedback-program-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/imdc-neurofeedback-program-redacted.webp",
     "width": 2480,
     "height": 3508,
-    "attachment": "/works/application-portfolio/originals/imdc-neurofeedback-program.pdf"
   },
   {
     "id": "visual-static-29-parent-guidance-process-led",
@@ -191,8 +190,8 @@ export const visualCatalog = [
     "project": "IMA 社媒运营",
     "projectEn": "IMA Social Media",
     "year": "2026",
-    "src": "/works/application-portfolio/originals/static-35-trust-led-ad-design-a.png",
-    "thumbnail": "/works/application-portfolio/previews/static-35-trust-led-ad-design-a.webp",
+    "src": "/works/application-portfolio/originals/static-35-trust-led-ad-design-a-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/static-35-trust-led-ad-design-a-redacted.webp",
     "width": 1760,
     "height": 2208
   },
@@ -204,8 +203,8 @@ export const visualCatalog = [
     "project": "IMA 社媒运营",
     "projectEn": "IMA Social Media",
     "year": "2026",
-    "src": "/works/application-portfolio/originals/static-35-trust-led-ad-design-b.png",
-    "thumbnail": "/works/application-portfolio/previews/static-35-trust-led-ad-design-b.webp",
+    "src": "/works/application-portfolio/originals/static-35-trust-led-ad-design-b-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/static-35-trust-led-ad-design-b-redacted.webp",
     "width": 1760,
     "height": 2208
   },
@@ -217,8 +216,8 @@ export const visualCatalog = [
     "project": "IMA 社媒运营",
     "projectEn": "IMA Social Media",
     "year": "2026",
-    "src": "/works/application-portfolio/originals/static-41-outcome-led-ad-design.png",
-    "thumbnail": "/works/application-portfolio/previews/static-41-outcome-led-ad-design.webp",
+    "src": "/works/application-portfolio/originals/static-41-outcome-led-ad-design-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/static-41-outcome-led-ad-design-redacted.webp",
     "width": 1792,
     "height": 2240
   },
@@ -490,8 +489,8 @@ export const visualCatalog = [
     "project": "网站原型设计",
     "projectEn": "Website Prototypes",
     "year": "",
-    "src": "/works/application-portfolio/originals/footer-page.png",
-    "thumbnail": "/works/application-portfolio/previews/footer-page.webp",
+    "src": "/works/application-portfolio/originals/footer-page-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/footer-page-redacted.webp",
     "width": 1920,
     "height": 1080
   },
@@ -516,8 +515,8 @@ export const visualCatalog = [
     "project": "网站原型设计",
     "projectEn": "Website Prototypes",
     "year": "",
-    "src": "/works/application-portfolio/originals/home-page.png",
-    "thumbnail": "/works/application-portfolio/previews/home-page.webp",
+    "src": "/works/application-portfolio/originals/home-page-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/home-page-redacted.webp",
     "width": 1920,
     "height": 4320
   },
@@ -529,8 +528,8 @@ export const visualCatalog = [
     "project": "网站原型设计",
     "projectEn": "Website Prototypes",
     "year": "",
-    "src": "/works/application-portfolio/originals/menu-footer.png",
-    "thumbnail": "/works/application-portfolio/previews/menu-footer.webp",
+    "src": "/works/application-portfolio/originals/menu-footer-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/menu-footer-redacted.webp",
     "width": 1920,
     "height": 1080
   },
@@ -555,8 +554,8 @@ export const visualCatalog = [
     "project": "网站原型设计",
     "projectEn": "Website Prototypes",
     "year": "",
-    "src": "/works/application-portfolio/originals/menu-page.png",
-    "thumbnail": "/works/application-portfolio/previews/menu-page.webp",
+    "src": "/works/application-portfolio/originals/menu-page-redacted.png",
+    "thumbnail": "/works/application-portfolio/previews/menu-page-redacted.webp",
     "width": 1920,
     "height": 3240
   },
@@ -598,80 +597,5 @@ export const visualCatalog = [
     "thumbnail": "/works/application-portfolio/previews/survey.webp",
     "width": 1920,
     "height": 1080
-  }
-]
-
-export const researchWorks = [
-  {
-    "id": "rap-and-reality",
-    "title": "中国嘻哈中的社会政治表达",
-    "titleEn": "Rap and Reality: Exploring Socio-Political Themes in China's Hip-Hop Scene",
-    "project": "清迈大学 · 独立研究",
-    "projectEn": "Chiang Mai University · Independent Study",
-    "year": "2025",
-    "description": "通过访谈、歌词及受众评论分析，讨论中国嘻哈的身份表达、商业化与规制。",
-    "descriptionEn": "Interviews, lyric analysis and audience commentary exploring identity, commercialisation and regulation in Chinese hip-hop.",
-    "format": "DOCX",
-    "src": "/works/application-portfolio/research/rap-and-reality.docx"
-  },
-  {
-    "id": "costume-dramas",
-    "title": "中国古装剧与年轻观众",
-    "titleEn": "Chinese Traditional Costume Dramas and Young Audience",
-    "project": "清迈大学 · 课程论文",
-    "projectEn": "Chiang Mai University · Term Paper",
-    "year": "2023",
-    "description": "以年轻观众访谈探讨古装剧消费、文化认同及对中国文化元素的理解。",
-    "descriptionEn": "An interview-based study of young viewers, costume drama consumption and interpretations of Chinese cultural identity.",
-    "format": "DOCX",
-    "src": "/works/application-portfolio/research/costume-dramas.docx"
-  },
-  {
-    "id": "education-choices",
-    "title": "中国公立与私立学校的教育选择",
-    "titleEn": "Rational Choices in Educational Systems: Public Schools vs Private Schools in China",
-    "project": "清迈大学 · 研讨报告",
-    "projectEn": "Chiang Mai University · Seminar Report",
-    "year": "",
-    "description": "结合选择理论与家庭系统理论，分析教育选择，并反思研讨展示的过程。",
-    "descriptionEn": "Education choices examined through Choice Theory and Family Systems Theory, alongside reflection on seminar facilitation.",
-    "format": "DOCX",
-    "src": "/works/application-portfolio/research/education-choices.docx"
-  },
-  {
-    "id": "naming-fukushima",
-    "title": "福岛排水报道中的媒体命名",
-    "titleEn": "Naming Fukushima: A Critical Discourse Analysis of Media Labels for Japan’s Wastewater Discharge",
-    "project": "马来亚大学 · 小组研究报告",
-    "projectEn": "University of Malaya · Group Research Report",
-    "year": "",
-    "description": "参与小组研究，以批判话语分析比较日本、中国与西方媒体的命名及框架。",
-    "descriptionEn": "A collaborative research report comparing terminology and framing across Japanese, Chinese and Western media using critical discourse analysis.",
-    "format": "PDF",
-    "src": "/works/application-portfolio/research/naming-fukushima.pdf"
-  },
-  {
-    "id": "penny-production-report",
-    "title": "从创作构想到银幕：佩妮寻声记",
-    "titleEn": "From Treatment to Screen: The Making of The Voice of Penny as a Tool for Autism Awareness and Social Inclusion",
-    "project": "马来亚大学 · 创意媒体项目报告",
-    "projectEn": "University of Malaya · Creative Media Project Report",
-    "year": "2026",
-    "description": "记录《佩妮寻声记》的创作与制作过程，探讨自闭症认知与社会包容。",
-    "descriptionEn": "A production and research report documenting The Voice of Penny and its approach to autism awareness and social inclusion.",
-    "format": "PDF",
-    "src": "/works/application-portfolio/research/penny-production-report.pdf"
-  },
-  {
-    "id": "hip-hop-proposal",
-    "title": "抵抗与收编：中国嘻哈青年亚文化",
-    "titleEn": "Negotiating Resistance and Incorporation: Chinese Hip-hop as a Youth Subculture under Regulation and Commercialisation",
-    "project": "马来亚大学 · 研究计划",
-    "projectEn": "University of Malaya · Research Proposal",
-    "year": "",
-    "description": "围绕规制与商业化背景下的中国嘻哈青年亚文化，提出研究问题与质性研究设计。",
-    "descriptionEn": "A proposal outlining research questions and a qualitative design for Chinese hip-hop as a youth subculture under regulation and commercialisation.",
-    "format": "PDF",
-    "src": "/works/application-portfolio/research/hip-hop-proposal.pdf"
   }
 ]

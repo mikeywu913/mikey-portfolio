@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from "motion/react"
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import mikeyCutout from "./assets/mikey-full-portrait.png"
+import { useEffect, useMemo, useRef, useState } from "react"
+import mikeyCutout from "./assets/mikey-cartoon.png"
 import { imageWorks, musicWorks, videoWorks } from "./works.js"
 import { projectWorks } from "./projects.js"
 import { ArchivePage, ContactDetails, MediaModal, MoreWorks, ProjectModal } from "./PortfolioContent.jsx"
 import { assetUrl } from "./assetUrl.js"
-import { researchWorks } from './applicationPortfolio.js'
+import { usePortfolioHistory } from './usePortfolioHistory.js'
 
 const categories = [
   { id: "project", title: "项目", titleEn: "Projects", label: "SELECTED CASES", labelZh: "精选案例", preview: "/works/images/momentus-2026.jpg.png", total: projectWorks.length },
@@ -13,7 +13,6 @@ const categories = [
   { id: "photography", title: "摄影", titleEn: "Photography", label: "LIGHT · PLACES · MOMENTS", labelZh: "光影 · 地点 · 瞬间", preview: "/works/images/chiang-mai.jpg", total: imageWorks.filter(w => w.kind === "photography").length },
   { id: "visual", title: "视觉设计", titleEn: "Visual Design", label: "DESIGN · IDENTITY · VISUALS", labelZh: "平面 · 品牌 · 视觉实验", preview: "/works/images/ima-process-led.png", total: imageWorks.filter(w => w.kind === "visual").length },
   { id: "music", title: "音乐", titleEn: "Music", label: "ORIGINAL MUSIC · SOUND", labelZh: "原创音乐 · 声音设计", preview: musicWorks.find(work => work.id === 'the-fire-is-on-us').cover, total: musicWorks.length },
-  { id: "research", title: "研究与写作", titleEn: "Research & Writing", label: "MEDIA · CULTURE · RESEARCH", labelZh: "媒体 · 文化 · 研究", preview: "/works/images/voice-of-penny-poster.png", total: researchWorks.length },
 ]
 
 const skillCards = [
@@ -21,6 +20,7 @@ const skillCards = [
   { number: "02", zh: "视频制作", en: "Film Production", zhText: "导演、摄影、剪辑与调色，独立完成从创意到成片的制作流程。", enText: "Directing, cinematography, editing and colour, from first idea to final cut." },
   { number: "03", zh: "社媒运营", en: "Social Media", zhText: "平台内容运营、传播增长、数据复盘与持续优化。", enText: "Platform-native content, audience growth and data-led iteration." },
   { number: "04", zh: "视觉设计", en: "Visual Design", zhText: "从单张海报到整套品牌视觉系统，建立清晰一致的表达。", enText: "Distinctive visual systems, from a single poster to a full campaign." },
+  { number: "05", zh: "语言与跨文化沟通", en: "Language & Cross-cultural Communication", zhText: "英语可作为工作语言，能够参与日常协作、项目讨论与英文内容创作，清晰传达想法。", enText: "Comfortable working in English, from everyday collaboration and project discussions to English-language content creation." },
 ]
 
 const tx = (language, zh, en) => language === "en" ? en : zh
@@ -28,24 +28,20 @@ const tx = (language, zh, en) => language === "en" ? en : zh
 function App() {
   const entry = new URLSearchParams(window.location.search)
   const linkedWork = videoWorks.find(work => work.id === entry.get("work"))
-  const [language, setLanguage] = useState("zh")
-  const [archive, setArchive] = useState(() => linkedWork ? "video" : categories.some(category => category.id === entry.get("archive")) ? entry.get("archive") : null)
+  const { view, navigate, closeDialog } = usePortfolioHistory({ language: 'zh', archive: linkedWork ? 'video' : categories.some(c => c.id === entry.get('archive')) ? entry.get('archive') : null, activeVideo: linkedWork || null, activeProject: null, activeImage: null, projectFilter: 'all', yearFilter: 'all' })
+  const { language, archive, activeVideo, activeProject, activeImage, projectFilter, yearFilter } = view
+  const setLanguage = value => navigate({ language: value })
+  const setArchive = value => navigate({ archive: value })
+  const setActiveProject = value => value ? navigate({ activeProject: value }) : closeDialog()
+  const setActiveImage = value => value ? navigate({ activeImage: value }) : closeDialog()
+  const setActiveVideo = value => value ? navigate({ activeVideo: value }) : closeDialog()
+  const setProjectFilter = value => navigate({ projectFilter: value })
+  const setYearFilter = value => navigate({ yearFilter: value })
   const [hoveredCategory, setHoveredCategory] = useState(null)
-  const [activeVideo, setActiveVideo] = useState(linkedWork || null)
-  const [activeProject, setActiveProject] = useState(null)
-  const [activeImage, setActiveImage] = useState(null)
   const [activeTrack, setActiveTrack] = useState(null)
   const [playingTrack, setPlayingTrack] = useState(null)
-  const [projectFilter, setProjectFilter] = useState("all")
-  const [yearFilter, setYearFilter] = useState("all")
   const audioRef = useRef(null)
   const homePosition = useRef(0)
-  const previousArchive = useRef(null)
-  useLayoutEffect(() => {
-    if (archive) window.scrollTo({top: 0, behavior: "instant"})
-    else if (previousArchive.current) window.scrollTo({top: homePosition.current, behavior: "instant"})
-    previousArchive.current = archive
-  }, [archive])
   const isEnglish = language === "en"
   const dialogOpen = Boolean(activeVideo || activeImage || activeProject)
   useEffect(() => {
@@ -61,10 +57,10 @@ function App() {
   }, [isEnglish])
 
   useEffect(() => {
-    const onKey = (event) => { if (event.key === "Escape") { setActiveVideo(null); setActiveImage(null); setActiveProject(null) } }
+    const onKey = (event) => { if (event.key === "Escape") { if (dialogOpen) closeDialog() } }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [])
+  }, [dialogOpen, closeDialog])
 
   useEffect(() => {
     if (!activeTrack?.src || !audioRef.current) return
@@ -78,8 +74,8 @@ function App() {
   const projects = [...new Set(imageWorks.filter(work => work.kind === archive).map((work) => work.project).filter(Boolean))]
   const years = [...new Set(imageWorks.filter(work => work.kind === archive).map((work) => work.year).filter(Boolean))].sort((a, b) => b.localeCompare(a))
 
-  const openVideo = (work) => { audioRef.current?.pause(); setActiveProject(null); setActiveVideo(work) }
-  const openArchive = (id) => { homePosition.current = window.scrollY; setArchive(id); setProjectFilter("all"); setYearFilter("all") }
+  const openVideo = (work) => { audioRef.current?.pause(); navigate({ activeProject: null, activeVideo: work }) }
+  const openArchive = (id) => { homePosition.current = window.scrollY; navigate({ archive: id, projectFilter: "all", yearFilter: "all" }) }
   const closeArchive = () => { if (archive) setArchive(null); else window.scrollTo({ top: 0, behavior: "smooth" }) }
   const revealTransition = { duration: 1.05, ease: [0.16, 1, 0.3, 1] }
 
@@ -118,7 +114,7 @@ function App() {
             <MoreWorks language={language} />
           </div></section>
 
-          <section id="skills" className="skills-section"><div className="section-frame"><SectionSymbols kind="skills" /><SectionLabel number="03" title={tx(language, "能力", "EXPERTISE")} /><AnimatedSectionTitle>{tx(language, "从想法，到成片。", "From the first idea to the final frame.")}</AnimatedSectionTitle><div className="strength-grid">{skillCards.map((item, index) => <motion.article key={item.number} initial={{ opacity: 0, y: 60, rotateX: -8 }} whileInView={{ opacity: 1, y: 0, rotateX: 0 }} viewport={{ once: false, amount: .2 }} transition={{ ...revealTransition, delay: index * .11 }} whileHover={{ y: -6 }}><div className="strength-card-top"><span>{item.number} / {tx(language, "专长", "EXPERTISE")}</span><b>{["✳", "◉", "↗", "▧"][index]}</b></div><h3>{tx(language, item.zh, item.en)}</h3><p>{tx(language, item.zhText, item.enText)}</p><i /></motion.article>)}</div></div></section>
+          <section id="skills" className="skills-section"><div className="section-frame"><SectionSymbols kind="skills" /><SectionLabel number="03" title={tx(language, "能力", "EXPERTISE")} /><AnimatedSectionTitle>{tx(language, "从想法，到成片。", "From the first idea to the final frame.")}</AnimatedSectionTitle><div className="strength-grid">{skillCards.map((item, index) => <motion.article key={item.number} initial={{ opacity: 0, y: 60, rotateX: -8 }} whileInView={{ opacity: 1, y: 0, rotateX: 0 }} viewport={{ once: false, amount: .2 }} transition={{ ...revealTransition, delay: index * .11 }} whileHover={{ y: -6 }}><div className="strength-card-top"><span>{item.number} / {tx(language, "专长", "EXPERTISE")}</span><b>{["✳", "◉", "↗", "▧", "◎"][index]}</b></div><h3>{tx(language, item.zh, item.en)}</h3><p>{tx(language, item.zhText, item.enText)}</p><i /></motion.article>)}</div></div></section>
         </main>
 
         <footer id="contact" className="contact-section"><div className="contact-backdrop" /><div className="section-frame contact-frame"><SectionSymbols kind="contact" /><SectionLabel number="04" title={tx(language, "保持联系", "GET IN TOUCH")} /><motion.div className="contact-main" initial={{ opacity: 0, y: 100, scale: .9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: false, amount: .35 }} transition={{ duration: 1.25, ease: [0.16, 1, 0.3, 1] }}><p className="eyebrow">{tx(language, "有故事想讲吗？", "HAVE A STORY TO TELL?")}</p><h2>{tx(language, "你有个想法？\n我想听听。", "Got an idea?\nI'd love to hear it.")}</h2><p>{tx(language, "项目合作、工作机会，或只是想聊聊创意，都欢迎联系我。", "For collaborations, opportunities, or just a conversation about ideas.")}</p><a className="contact-button" href="mailto:827206993@qq.com">{tx(language, "发邮件聊聊", "LET’S TALK")} <b>↗</b></a><ContactDetails language={language} /></motion.div><div className="contact-footer"><button className="wordmark" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>MIKEY<span>.</span></button><span>© 2026 Mikey Wu</span><span>{tx(language, "个人作品集", "INDEPENDENT CREATIVE PRACTICE")}</span></div></div></footer>

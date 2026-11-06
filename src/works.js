@@ -1,6 +1,6 @@
 import { musicCatalog } from './musicCatalog.js'
 import { photographyCatalog } from './photographyCatalog.js'
-import { visualCatalog } from './applicationPortfolio.js'
+import { visualCollections } from './visualCollections.js'
 
 // Owner-supplied credits; public Bilibili dates and durations verified on 2026-10-26.
 const bili = (id) => `https://www.bilibili.com/video/${id}/`
@@ -70,7 +70,7 @@ export const videoWorks = [
 ]
 export const imageWorks = [
   ...photographyCatalog,
-  ...visualCatalog,
+  ...visualCollections,
 ]
 export const musicWorks = musicCatalog.map(work => work.id === fire.id
   ? { ...fire, ...work, videoUrl: fire.src, videoDuration: '4:28' }
